@@ -34,14 +34,21 @@ while True:
 
             print(shortest_url)
 
-            ## Save image
-            with open(f'{url_name}.jpg', "wb") as fp:
-                fp.write(urllib.request.urlopen(shortest_url).read())
+            ## Save image & return path to image
+            if url_name in shortest_url.lower():
+                #Save
+                with open(f'{url_name}.jpg', "wb") as fp:
+                    fp.write(urllib.request.urlopen(shortest_url).read())
 
+                #Path
+                with open('out-pipe.txt', 'w+') as pipe:
+                    pipe.write(f'./{url_name}.jpg')
+
+        # Catching error
         except:
-            print("Error")
-
-
-        if read_data:
+            # Report error
             with open('out-pipe.txt', 'w+') as pipe:
-                pipe.write(f'./{url_name}.jpg')
+                pipe.write("Cannot find: " + read_data)
+            
+            # Some error discontinues while-loop, 'continue' helps stay in the loop
+            continue
